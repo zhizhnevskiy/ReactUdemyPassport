@@ -6,21 +6,58 @@ import Login from "../components/Login";
 import Register from "../components/Register";
 import Forget from "../components/Forget";
 import Profile from "../components/Profile";
+import axios from "axios";
 
 class Header extends Component {
+    state = {
+        loggedUser: {}
+    }
+
+    componentDidMount() {
+        // Login User Credentials
+        axios.get('/user')
+            .then((response) => {
+                this.setUser(response.data)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    setUser = (user) => {
+        this.setState({loggedUser: user})
+    }
+
     render() {
         return (
             <Router>
                 <div>
-                    <NavMenu/>
+                    <NavMenu
+                        user={this.state.loggedUser}
+                        setUser={this.setUser}
+                    />
                     {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
                     <Routes>
-                        <Route exact path="/" element={ <Home /> }/>
-                        <Route exact path="/login" element={ <Login /> }/>
-                        <Route exact path="/register" element={ <Register /> }/>
-                        <Route exact path="/forget" element={ <Forget /> }/>
-                        <Route exact path="/profile" element={ <Profile /> }/>
+                        <Route exact path="/" element={<Home/>}/>
+                        <Route exact path="/login"
+                               element={<Login
+                                   user={this.state.loggedUser}
+                                   setUser={this.setUser}
+                               />}
+                        />
+                        <Route exact path="/register"
+                               element={<Register
+                                   user={this.state.loggedUser}
+                                   setUser={this.setUser}
+                               />}
+                        />
+                        <Route exact path="/forget" element={<Forget/>}/>
+                        <Route exact path="/profile"
+                               element={<Profile
+                                   user={this.state.loggedUser}
+                               />}
+                        />
                     </Routes>
                 </div>
             </Router>
