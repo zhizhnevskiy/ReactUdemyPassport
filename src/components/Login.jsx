@@ -6,7 +6,7 @@ class Login extends Component {
     state = {
         email: '',
         password: '',
-        message: ''
+        error: ''
     }
 
     formSubmit = (event) => {
@@ -24,11 +24,23 @@ class Login extends Component {
                 this.props.setUser(response.data.user)
             })
             .catch((error) => {
-                console.log(error);
+                this.setState({error: error.response.data.message})
             });
     }
 
     render() {
+
+        // Show messages
+        let error = '';
+        if (this.state.error) {
+            error = (
+                <div>
+                    <div className='alert alert-danger' role='alert'>
+                        {this.state.error}
+                    </div>
+                </div>
+            )
+        }
 
         // After Login Redirect to Profile
         if (this.state.loggedIn) {
@@ -41,6 +53,7 @@ class Login extends Component {
                     <div className="mt-5 p-5 bg-light text-black col-lg-4 offset-lg-4">
                         <h3 className="text-center">Login Account</h3>
                         <form onSubmit={this.formSubmit}>
+                            {error}
                             <div className="mb-4">
                                 <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
                                 <input type="email"

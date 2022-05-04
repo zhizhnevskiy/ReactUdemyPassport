@@ -5,6 +5,7 @@ import Home from "../components/Home";
 import Login from "../components/Login";
 import Register from "../components/Register";
 import Forget from "../components/Forget";
+import Reset from "../components/Reset";
 import Profile from "../components/Profile";
 import axios from "axios";
 
@@ -40,6 +41,11 @@ class Header extends Component {
             renders the first one that matches the current URL. */}
                     <Routes>
                         <Route exact path="/" element={<Home/>}/>
+                        <Route exact path="/profile"
+                               element={<Profile
+                                   user={this.state.loggedUser}
+                               />}
+                        />
                         <Route exact path="/login"
                                element={<Login
                                    user={this.state.loggedUser}
@@ -53,11 +59,7 @@ class Header extends Component {
                                />}
                         />
                         <Route exact path="/forget" element={<Forget/>}/>
-                        <Route exact path="/profile"
-                               element={<Profile
-                                   user={this.state.loggedUser}
-                               />}
-                        />
+                        <Route exact path="/reset/:id" element={<Reset/>}/>
                     </Routes>
                 </div>
             </Router>

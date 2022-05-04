@@ -4,10 +4,6 @@ import {BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
 
 class NavMenu extends Component {
 
-    stste = {
-        loggedOut: ''
-    }
-
     logout = () => {
         localStorage.clear();
         this.props.setUser(null);

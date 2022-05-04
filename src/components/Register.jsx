@@ -8,7 +8,7 @@ class Register extends Component {
         email: '',
         password: '',
         password_confirmation: '',
-        message: ''
+        message: []
     }
 
     formSubmit = (event) => {
@@ -26,13 +26,31 @@ class Register extends Component {
                     loggedIn: true
                 })
                 this.props.setUser(response.data.user)
+
             })
             .catch((error) => {
-                console.log(error);
+                const messages = new Set()
+                Object.values(error.response.data.message).forEach(function (el) {
+                    messages.add(el)
+                })
+                this.setState({message: messages})
             });
     }
 
     render() {
+
+        // Show messages
+        let message = '';
+        if (this.state.message.length != 0) {
+            console.log('message', this.state.message)
+            message = (
+                <div>
+                    <div className='alert alert-danger' role='alert'>
+                        {this.state.message}
+                    </div>
+                </div>
+            )
+        }
 
         // After Register Redirect to Profile
         if (this.state.loggedIn) {
@@ -46,6 +64,7 @@ class Register extends Component {
                         <div className="mt-5 p-5 bg-light text-black col-lg-4 offset-lg-4">
                             <h3 className="text-center">Register Account</h3>
                             <form onSubmit={this.formSubmit}>
+                                {message}
                                 <div className="mb-4">
                                     <label htmlFor="exampleInputEmail1" className="form-label">User Name</label>
                                     <input
