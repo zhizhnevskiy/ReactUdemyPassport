@@ -26,14 +26,17 @@ class Register extends Component {
                     loggedIn: true
                 })
                 this.props.setUser(response.data.user)
-
             })
             .catch((error) => {
+                if(typeof error.response.data.message == "object") {
                 const messages = new Set()
                 Object.values(error.response.data.message).forEach(function (el) {
                     messages.add(el)
                 })
                 this.setState({message: messages})
+                } else {
+                    this.setState({message: error.response.data.message})
+                }
             });
     }
 
@@ -41,8 +44,7 @@ class Register extends Component {
 
         // Show messages
         let message = '';
-        if (this.state.message.length != 0) {
-            console.log('message', this.state.message)
+        if (this.state.message.length !== 0) {
             message = (
                 <div>
                     <div className='alert alert-danger' role='alert'>
@@ -55,6 +57,11 @@ class Register extends Component {
         // After Register Redirect to Profile
         if (this.state.loggedIn) {
             return <Navigate to={'/profile'}/>
+        }
+
+        // check login
+        if(localStorage.getItem('token')){
+            return <Navigate to={'/'}/>
         }
 
         return (

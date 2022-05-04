@@ -16,13 +16,15 @@ class Header extends Component {
 
     componentDidMount() {
         // Login User Credentials
-        axios.get('/user')
-            .then((response) => {
-                this.setUser(response.data)
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        if (localStorage.getItem('token')) {
+            axios.get('/user')
+                .then((response) => {
+                    this.setUser(response.data)
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
     }
 
     setUser = (user) => {
@@ -30,6 +32,7 @@ class Header extends Component {
     }
 
     render() {
+
         return (
             <Router>
                 <div>
@@ -60,6 +63,7 @@ class Header extends Component {
                         />
                         <Route exact path="/forget" element={<Forget/>}/>
                         <Route exact path="/reset/:id" element={<Reset/>}/>
+
                     </Routes>
                 </div>
             </Router>

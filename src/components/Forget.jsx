@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import axios from "axios";
 
 class Forget extends Component {
@@ -50,7 +50,10 @@ class Forget extends Component {
                 </div>
             )
         }
-
+        // check login
+        if(localStorage.getItem('token')){
+            return <Navigate to={'/'}/>
+        }
         return (
             <div>
                 <div className="row">

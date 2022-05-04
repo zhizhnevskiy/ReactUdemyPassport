@@ -47,6 +47,11 @@ class Login extends Component {
             return <Navigate to={'/profile'}/>
         }
 
+        // check login
+        if(localStorage.getItem('token')){
+            return <Navigate to={'/'}/>
+        }
+
         return (
             <div>
                 <div className="row">
